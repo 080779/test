@@ -9,9 +9,9 @@ namespace AD.RTX.WebApi.Controllers
 {
     public class AdRtxController : ApiController
     {
-        public string Get()
+        public string get()
         {
-            return "aa";
+            return "";
         }
     }
 }
