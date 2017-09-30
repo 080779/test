@@ -9,5 +9,6 @@ namespace AD.RTX.WebApi.Controllers
 {
     public class AdRtxController : ApiController
     {
+        string abc="21";
     }
 }
