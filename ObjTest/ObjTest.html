@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnOK").click(function () {
+                $.ajax({
+                    url: "/main/delete", type: "post", data: { userName: $("#txtName").val() },
+                    success: function (result)
+                    {
+                        if(result.status=="ok")
+                        {
+                            alert(result.data);
+                        }
+                        else
+                        {
+                            alert(result.msg);
+                        }
+                    },
+                    error: function () { alert("网络错误")}
+                });
+            });
+            $("#btnSave").click(function () {
+                $.ajax({
+                    url: "http://192.168.31.134:8083/main/syncrtx", type: "post", data: { comName: $("#txtName").val() },
+                    success: function (result) {
+                        if (result.status == "ok") {
+                            alert(result.msg);
+                        }
+                        else {
+                            alert(result.msg);
+                        }
+                    },
+                    error: function () { alert("网络错误") }
+                });
+            });
+            $("#btnSave1").click(function () {
+                $.ajax({
+                    url: "http://192.168.31.134:8083/domainrtx/addou", type: "post",
+                    success: function (result) {
+                        alert(result.status+result.msg+result.data);
+                    },
+                    error: function ()
+                    { alert("网络错误") }
+                });
+            });
+        });
+    </script>
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <input type="text" id="txtName" /><input type="button" id="btnOK" value="提交" />
+        <input type="button" id="btnSave" value="提交" />
+        <input type="button" id="btnSave1" value="提交1" />
+        <label>@Model</label>
+    </div>
+</body>
+</html>

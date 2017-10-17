@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnOK").click(function () {
+                $.ajax({
+                    url: "http://192.168.31.134:8088/api/Adrtx", datatype:"GET",
+                    success: function (result)
+                    {
+                        alert(result);
+                    },
+                    error: function () { alert("网络错误")}
+                });
+                //$.getJSON("http://192.168.31.134:8088/api/Adrtx/Get", function (data) { alert(data.data) });
+
+            });
+            $("#btnSave").click(function () {
+
+            });
+            $("#btnSave1").click(function () {
+                $.ajax({
+                    url: "", type: "post",
+                    success: function (result) {
+                        alert(result.status+result.msg+result.data);
+                    },
+                    error: function ()
+                    { alert("网络错误") }
+                });
+            });
+        });
+    </script>
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <input type="text" id="txtName" /><input type="button" id="btnOK" value="提交" />
+        <input type="button" id="btnSave" value="提交" />
+        <input type="button" id="btnSave1" value="提交1" />
+        <label>@Model</label>
+    </div>
+</body>
+</html>

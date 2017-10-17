@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObjTest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,7 +10,13 @@ namespace AD.RTX.WebApi.Controllers
 {
     public class AdRtxController : ApiController
     {
-        public IEnumerable<string> Get()
+        //[HttpGet]
+        //public string Get()
+        //{
+        //    return "三少";
+        //}
+        [HttpGet]
+        public IEnumerable<string> GetAll()
         {
             List<string> list = new List<string>();
             list.Add("跳舞");
