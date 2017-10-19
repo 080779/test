@@ -2,16 +2,19 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <meta name="viewport" content="width=device-width" />   
+    <script src="~/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $("#btnOK").click(function () {
                 $.ajax({
-                    url: "http://192.168.31.134:8088/api/Adrtx", datatype:"GET",
+                    url: "http://192.168.31.134:8088/api/Adrtx/getall", type:"GET",
                     success: function (result)
                     {
-                        alert(result);
+                        $.each(result, function ()
+                        {
+                            alert(this.Msg);
+                        });
                     },
                     error: function () { alert("网络错误")}
                 });
@@ -19,16 +22,22 @@
 
             });
             $("#btnSave").click(function () {
-
+                $.ajax({
+                    url: "http://192.168.31.134:8088/api/Adrtx/post", type: "POST",
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error: function () { alert("网络错误") }
+                });
             });
             $("#btnSave1").click(function () {
                 $.ajax({
-                    url: "", type: "post",
+                    url: "http://192.168.31.134:8088/api/Adrtx/posttest", type: "POST",
                     success: function (result) {
-                        alert(result.status+result.msg+result.data);
+                        alert(result.status);
+                        alert(result.Msg);
                     },
-                    error: function ()
-                    { alert("网络错误") }
+                    error: function () { alert("网络错误") }
                 });
             });
         });
