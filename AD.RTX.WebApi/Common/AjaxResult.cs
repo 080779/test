@@ -5,7 +5,7 @@ using System.Web;
 
 namespace AD.RTX.WebApi
 {
-    public class AjaxReslut
+    public class AjaxResult
     {
         public string Status { get; set; }
         public string Msg { get; set; }

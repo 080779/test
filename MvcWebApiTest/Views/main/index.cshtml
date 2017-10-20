@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />   
-    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $("#btnOK").click(function () {
@@ -31,10 +31,16 @@
                 });
             });
             $("#btnSave1").click(function () {
+                var data=$("#user").val();
+                var obj = { "one": "1", "two": "2", "three": "3"};
+                $("#div1").html(data);
+                $.each(JSON.parse(data),function (k, v) { alert(v) });
+            });
+            
+            $("#btnAddUser").click(function () {
                 $.ajax({
-                    url: "http://192.168.31.134:8088/api/Adrtx/posttest", type: "POST",
+                    url: "http://192.168.31.134:8088/api/Adrtx/AddUser", type: "POST", data: JSON.parse($("#user").val()),
                     success: function (result) {
-                        alert(result.status);
                         alert(result.Msg);
                     },
                     error: function () { alert("网络错误") }
@@ -47,9 +53,11 @@
 <body>
     <div>
         <input type="text" id="txtName" /><input type="button" id="btnOK" value="提交" />
+        <input type="hidden" id="user" value="@ViewBag.User" />
         <input type="button" id="btnSave" value="提交" />
         <input type="button" id="btnSave1" value="提交1" />
-        <label>@Model</label>
+        <input type="button" id="btnAddUser" value="添加用户" />
+        <div id="div1"></div>
     </div>
 </body>
 </html>

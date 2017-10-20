@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AD.RTX.WebApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace MvcWebApiTest.Controllers
 {
@@ -10,6 +12,17 @@ namespace MvcWebApiTest.Controllers
     {        
         public ActionResult Index()
         {
+            DomainUser user = new DomainUser();
+            user.Name = "kluu";
+            user.DisplayName = "狂鼠";
+            user.Department = "财务部";            
+            user.TelephoneNumber = "15615615656";
+            user.Mail = "aiii10120@qq.com";
+            user.Gender = 0;
+            user.UserPwd = "Asd123456";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string strUser= js.Serialize(user);
+            ViewBag.User = strUser;
             return View();
         }
     }

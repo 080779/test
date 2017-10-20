@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<ADConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DoMainPath>LDAP://192.168.31.134/DC=test,DC=com</DoMainPath>
+  <DoMainOUPath>LDAP://192.168.31.134/OU=南宁公司,DC=test,DC=com</DoMainOUPath>
+  <AdminUser>Administrator</AdminUser>
+  <Password>Abc123456</Password>
+  <DoMainPath1>LDAP://192.168.31.134/</DoMainPath1>
+  <DoMainPath2>OU=南宁公司,</DoMainPath2>
+  <DoMainPath3>DC=test,DC=com</DoMainPath3>
+</ADConfig>
