@@ -23,18 +23,21 @@
             });
             $("#btnSave").click(function () {
                 $.ajax({
-                    url: "http://192.168.31.134:8088/api/Adrtx/post", type: "POST",
+                    url: "http://192.168.31.134:8088/api/Adrtx/Test", type: "POST", data: { "name": "软件研发部"},
                     success: function (result) {
-                        alert(result);
+                        alert(result.data);
                     },
                     error: function () { alert("网络错误") }
                 });
             });
             $("#btnSave1").click(function () {
-                var data=$("#user").val();
-                var obj = { "one": "1", "two": "2", "three": "3"};
-                $("#div1").html(data);
-                $.each(JSON.parse(data),function (k, v) { alert(v) });
+                $.ajax({
+                    url: "http://192.168.31.134:8088/api/Adrtx/AddOUDept", type: "POST", data: { "parentDeptName": "软件研发部", "deptName": "测试部" },
+                    success: function (result) {
+                        alert(result.Msg);
+                    },
+                    error: function () { alert("网络错误") }
+                });
             });
             
             $("#btnAddUser").click(function () {

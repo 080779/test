@@ -1,4 +1,5 @@
 ﻿using AD.RTX.WebApi;
+using AD.RTX.WebApi.Models;
 using Newtonsoft.Json;
 using ObjTest;
 using System;
@@ -65,43 +66,48 @@ namespace AD.RTX.WebApi.Controllers
             return Json(new AjaxResult { Status = "ok", Msg = "success", Data = path });
         }
 
-        public IHttpActionResult AddOUDept(string parentDeptName, string deptName)
+        public IHttpActionResult AddOUDept(OUDeptModel model)
         {
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath("~/ADConfig.xml");
             AdOperate ado = new AdOperate(filePath);
             DirectoryEntry entry = ado.GetEntry();
-            string filter = "(&(objectclass=organizationalUnit)(ou=" + parentDeptName + "))";
+            string filter = "(&(objectclass=organizationalUnit)(ou=" + model.ParentDeptName + "))";
             DirectoryEntry ouEntry = ado.GetOUEntry(entry, filter);
-            if (!ado.AddOUEntry(ouEntry, deptName))
+            if (!ado.AddOUEntry(ouEntry, model.DeptName))
             {
                 return Json(new AjaxResult { Status = "error", Msg = "ad域中添加部门失败" });
             }
             RtxManager rm = new RtxManager();
-            if (!rm.AddDept(deptName, parentDeptName))
+            if (!rm.AddDept(model.DeptName, model.ParentDeptName))
             {
-                filter = "(&(objectclass=organizationalUnit)(ou=" + deptName + "))";
+                filter = "(&(objectclass=organizationalUnit)(ou=" + model.DeptName + "))";
                 ado.DelEntry(ado.GetOUEntry(entry, filter));
                 return Json(new AjaxResult { Status = "error", Msg = "RTX中添加部门失败" });
             }
             return Json(new AjaxResult { Status = "ok", Msg = "部门同步添加成功" });
         }
 
-        public IHttpActionResult EditOUDept(string deptName, string newDeptName)
+        public IHttpActionResult Test(dynamic obj)
+        {
+            return Json(new AjaxResult { Status="ok",Msg="iggs",Data=Convert.ToString(obj.name) });
+        }
+        
+        public IHttpActionResult EditOUDept(EditOUDeptModel model)
         {
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath("~/ADConfig.xml");
             AdOperate ado = new AdOperate(filePath);
             DirectoryEntry entry = ado.GetEntry();
-            string filter = "(&(objectclass=organizationalUnit)(ou=" + deptName + "))";
+            string filter = "(&(objectclass=organizationalUnit)(ou=" + model.DeptName + "))";
             DirectoryEntry ouEntry = ado.GetOUEntry(entry, filter);
-            if (!ado.OUEntryReName(ouEntry, newDeptName))
+            if (!ado.OUEntryReName(ouEntry, model.NewDeptName))
             {
                 return Json(new AjaxResult { Status = "error", Msg = "ad域中编辑部门失败" });
             }
             RtxManager rm = new RtxManager();
-            if (!rm.SetDeptName(deptName, newDeptName))
+            if (!rm.SetDeptName(model.DeptName, model.NewDeptName))
             {
-                filter = "(&(objectclass=organizationalUnit)(ou=" + newDeptName + "))";
-                ado.OUEntryReName(ado.GetOUEntry(entry, filter), deptName);
+                filter = "(&(objectclass=organizationalUnit)(ou=" + model.NewDeptName + "))";
+                ado.OUEntryReName(ado.GetOUEntry(entry, filter), model.DeptName);
                 return Json(new AjaxResult { Status = "error", Msg = "RTX中编辑部门失败" });
             }
             return Json(new AjaxResult { Status = "ok", Msg = "部门同步编辑成功" });
@@ -172,6 +178,5 @@ namespace AD.RTX.WebApi.Controllers
             rm.DelDept(deptName);
             return Json(new AjaxResult { Status = "ok", Msg = "部门删除成功" });
         }
-
     }
 }

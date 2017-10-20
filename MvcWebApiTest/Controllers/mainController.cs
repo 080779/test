@@ -13,8 +13,8 @@ namespace MvcWebApiTest.Controllers
         public ActionResult Index()
         {
             DomainUser user = new DomainUser();
-            user.Name = "kluu";
-            user.DisplayName = "狂鼠";
+            user.Name = "lpks";
+            user.DisplayName = "猎空";
             user.Department = "财务部";            
             user.TelephoneNumber = "15615615656";
             user.Mail = "aiii10120@qq.com";
