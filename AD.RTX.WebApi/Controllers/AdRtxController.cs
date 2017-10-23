@@ -87,9 +87,28 @@ namespace AD.RTX.WebApi.Controllers
             return Json(new AjaxResult { Status = "ok", Msg = "部门同步添加成功" });
         }
 
-        public IHttpActionResult Test(dynamic obj)
+        public IHttpActionResult ComNameManager(ComNameModel model)
         {
-            return Json(new AjaxResult { Status="ok",Msg="iggs",Data=Convert.ToString(obj.name) });
+            string filePath = System.Web.Hosting.HostingEnvironment.MapPath("~/ADConfig.xml");
+            AdOperate ado = new AdOperate(filePath);
+            DirectoryEntry entry = ado.GetEntry();
+            string filter = "(&(objectclass=organizationalUnit)(ou=" + model.OldComName + "))";
+            DirectoryEntry ouEntry = ado.GetOUEntry(entry, filter);
+            if (!ado.OUEntryReName(ouEntry, model.ComName))
+            {
+                return Json(new AjaxResult { Status = "error", Msg = "ad域中根组织单位编辑失败" });
+            }
+            RtxManager rm = new RtxManager();
+            if(!rm.SetDeptName(model.OldComName, model.ComName))
+            {
+                ado.OUEntryReName(ouEntry, model.OldComName);
+                return Json(new AjaxResult { Status = "error", Msg = "RTX中根部门编辑失败" });
+            }
+            if(!ado.SetADConfig(model.ComName, filePath))
+            {
+                return Json(new AjaxResult { Status = "error", Msg = "配置文件编辑失败" });
+            }
+            return Json(new AjaxResult { Status = "ok", Msg = "企业信息修改成功" });
         }
         
         public IHttpActionResult EditOUDept(EditOUDeptModel model)
@@ -154,19 +173,27 @@ namespace AD.RTX.WebApi.Controllers
             return Json(new AjaxResult { Status = "ok", Msg = "rtx编辑用户成功" });
         }
         
-        public IHttpActionResult DelUser(string userName)
+        public IHttpActionResult DelUser([FromBody]string userName)
         {
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath("~/ADConfig.xml");
             AdOperate ado = new AdOperate(filePath);
             DirectoryEntry entry = ado.GetEntry();
             DirectoryEntry userEntry = ado.GetUserEntry(entry, userName);
-            ado.DelEntry(userEntry);
+            if (!ado.DelEntry(userEntry))
+            {
+                return Json(new AjaxResult { Status = "fail", Msg = userEntry.Path });
+            }
+            //ado.DelEntry(userEntry);
             RtxManager rm = new RtxManager();
-            rm.RemoveUser(userName);
+            if (!rm.RemoveUser(userName))
+            {
+                return Json(new AjaxResult { Status = "fail", Msg = userName });
+            }
+            //rm.RemoveUser(userName);
             return Json(new AjaxResult { Status = "ok", Msg = "用户删除成功" });
         }
 
-        public IHttpActionResult DelOUDept(string deptName)
+        public IHttpActionResult DelOUDept([FromBody]string deptName)
         {
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath("~/ADConfig.xml");
             AdOperate ado = new AdOperate(filePath);

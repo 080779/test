@@ -23,9 +23,9 @@
             });
             $("#btnSave").click(function () {
                 $.ajax({
-                    url: "http://192.168.31.134:8088/api/Adrtx/Test", type: "POST", data: { "name": "软件研发部"},
+                    url: "http://192.168.31.134:8088/api/Adrtx/DelUser", type: "POST", data: { "": "dva" },
                     success: function (result) {
-                        alert(result.data);
+                        alert(result.Msg);
                     },
                     error: function () { alert("网络错误") }
                 });

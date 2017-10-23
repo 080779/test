@@ -31,30 +31,31 @@ namespace AD.RTX.WebApi
 
         public bool SetADConfig(string comName,string filePath)
         {
-            if(ADC.DoMainOUPath != ADC.DoMainPath1 + "OU=" + comName + "," + ADC.DoMainPath3)
+            if(ADC.DoMainOUPath != ADC.DoMainPath1 + "OU=" + comName + "," + ADC.DoMainPath3 && ADC.DoMainPath2!= "OU=" + comName + ",")
             {
+                ADC.DoMainPath2 = "OU=" + comName + ",";
                 ADC.DoMainOUPath = ADC.DoMainPath1 + "OU=" + comName + "," + ADC.DoMainPath3;
                 return Helper.SerializeToXml(ADC, filePath);
             }
             return true;
         }
 
-        public void GetADConfig(string filePath,string comName)
-        {
-            ADConfig adc = Helper.DeserializeFromXML<ADConfig>(filePath);
-            if (!string.IsNullOrEmpty(comName))
-            {
-                adc.DoMainPath2 = "OU=" + comName + ",";
-                adc.SetDoMainOUPath();
-            }              
-            if(adc!=null)
-            {
-                this.Path = adc.DoMainPath;
-                this.OUPath = adc.DoMainOUPath; 
-                this.AdminUser = adc.AdminUser;
-                this.Password = adc.Password;
-            }            
-        }
+        //public void GetADConfig(string filePath,string comName)
+        //{
+        //    ADConfig adc = Helper.DeserializeFromXML<ADConfig>(filePath);
+        //    if (!string.IsNullOrEmpty(comName))
+        //    {
+        //        adc.DoMainPath2 = "OU=" + comName + ",";
+        //        adc.SetDoMainOUPath();
+        //    }              
+        //    if(adc!=null)
+        //    {
+        //        this.Path = adc.DoMainPath;
+        //        this.OUPath = adc.DoMainOUPath; 
+        //        this.AdminUser = adc.AdminUser;
+        //        this.Password = adc.Password;
+        //    }            
+        //}
 
         public DirectoryEntry GetEntry()
         {
